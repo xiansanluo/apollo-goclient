@@ -1,12 +1,8 @@
-Agollo - Go Client for Apollo
+ Go Client for Apollo
 ================
 
-[![Build Status](https://travis-ci.org/zouyx/agollo.svg?branch=master)](https://travis-ci.org/zouyx/agollo)
-[![codebeat badge](https://codebeat.co/badges/bc2009d6-84f1-4f11-803e-fc571a12a1c0)](https://codebeat.co/projects/github-com-zouyx-agollo-master)
-[![Coverage Status](https://coveralls.io/repos/github/zouyx/agollo/badge.svg?branch=master)](https://coveralls.io/github/zouyx/agollo?branch=master)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![GoDoc](http://godoc.org/github.com/zouyx/agollo?status.svg)](http://godoc.org/github.com/zouyx/agollo)
-[![GitHub release](https://img.shields.io/github/release/zouyx/agollo.svg)](https://github.com/zouyx/agollo/releases)
+* Source Code: https://github.com/zouyx/agollo/
+* Fork 主要改了时间的配置，过期时间为7天，每次`StartRefreshConfig`都会更新过期时间。修正了timeout，此值需要大于30s，因为为长连接，需保持30s。
 
 方便Golang接入配置中心框架 [Apollo](https://github.com/ctripcorp/apollo) 所开发的Golang版本客户端。
 
@@ -39,11 +35,44 @@ go get -u github.com/zouyx/agollo
 
 # Usage
 
+- 修改配置
+> app.properties:
+```json
+{
+    "appId": "SampleApp",
+    "cluster": "default",
+    "namespaceName": "application",
+    "ip": "localhost:8080"
+}
+```  
+> seelog.xml
+```xml
+<seelog type="sync" mininterval="2000000" maxinterval="100000000" critmsgcount="500" minlevel="debug">
+
+    <outputs formatid="all">
+        <console formatid="fmterror"/>
+    </outputs>
+    <formats>
+        <format id="fmtinfo" format="[%Level]  [%Time] %Msg%n"/>
+        <format id="fmterror" format="[%LEVEL] [%Time] [%FuncShort @ %File.%Line] %Msg%n"/>
+        <format id="all" format="[%Level] [%Time]  [@ %File.%Line] %Msg%n"/>
+        <format id="criticalemail" format="Critical error on our server!\n    %Time %Date %RelFile %Func %Msg \nSent by Seelog"/>
+    </formats>
+</seelog>
+```
+
 - 启动agollo
 
 ``` go
 func main() {
-	 go agollo.Start()
+  go agollo.Start()
+  for {
+    fmt.Println("apollo is :", agollo.GetIntValue("timeout", 100), agollo.GetStringValue("str", "100")).  #服务读取配置需要等待1s重，等agollo.Start()初始化完成
+    time.Sleep(1 * time.Second)
+    ttl, _ := agollo.GetApolloConfigCache().TTL([]byte("timeout"))
+    fmt.Println("ttl is:",ttl)
+  }
+  time.Sleep(100 * time.Minute)
 }
 ```
 
@@ -75,12 +104,5 @@ func main() {
  
   欢迎查阅 [Wiki](https://github.com/zouyx/agollo/wiki) 或者 [godoc](http://godoc.org/github.com/zouyx/agollo) 获取更多有用的信息
 
-# Contribution
-  * Source Code: https://github.com/zouyx/agollo/
-  * Issue Tracker: https://github.com/zouyx/agollo/issues
-  
-# License
-The project is licensed under the [Apache 2 license](https://github.com/zouyx/agollo/blob/master/LICENSE).
 
-# Reference
-Apollo : https://github.com/ctripcorp/apollo
+
