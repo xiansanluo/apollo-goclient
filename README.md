@@ -67,7 +67,8 @@ go get -u github.com/zouyx/agollo
 func main() {
   go agollo.Start()
   for {
-    fmt.Println("apollo is :", agollo.GetIntValue("timeout", 100), agollo.GetStringValue("str", "100")).  #服务读取配置需要等待1s重，等agollo.Start()初始化完成
+    fmt.Println("apollo is :", agollo.GetIntValue("timeout", 100), agollo.GetStringValue("str", "100"))  
+    #服务读取配置需要等待1s重，等agollo.Start()初始化完成
     time.Sleep(1 * time.Second)
     ttl, _ := agollo.GetApolloConfigCache().TTL([]byte("timeout"))
     fmt.Println("ttl is:",ttl)
@@ -100,9 +101,6 @@ func main() {
   agollo.GetBoolValue(Key,DefaultValue)
   ```
   
-  后续可支持更多类型
- 
-  欢迎查阅 [Wiki](https://github.com/zouyx/agollo/wiki) 或者 [godoc](http://godoc.org/github.com/zouyx/agollo) 获取更多有用的信息
 
 
 
