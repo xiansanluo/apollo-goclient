@@ -13,21 +13,21 @@ import (
 const appConfigFileName = "app.properties"
 
 var (
-	refresh_interval     = 5 * time.Minute          //5m
+	refresh_interval     = 10 * time.Minute         //5m
 	refresh_interval_key = "apollo.refreshInterval" //
 
 	long_poll_interval        = 2 * time.Second //2s
 	long_poll_connect_timeout = 1 * time.Minute //1m
 
-	connect_timeout = 1 * time.Second //1s
+	connect_timeout = 60 * time.Second //1s
 	//for on error retry
-	on_error_retry_interval = 1 * time.Second //1s
+	on_error_retry_interval = 60 * time.Second //1s
 	//for typed config cache of parser result, e.g. integer, double, long, etc.
 	//max_config_cache_size    = 500             //500 cache key
 	//config_cache_expire_time = 1 * time.Minute //1 minute
 
 	//max retries connect apollo
-	max_retries = 5
+	max_retries = 10000
 
 	//refresh ip list
 	refresh_ip_list_interval = 20 * time.Minute //20m

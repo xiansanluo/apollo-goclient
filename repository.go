@@ -13,7 +13,7 @@ const (
 	apolloConfigCacheSize = 50 * 1024 * 1024
 
 	//1 minute
-	configCacheExpireTime = 120
+	configCacheExpireTime = 3600 * 24 * 7
 )
 
 var (

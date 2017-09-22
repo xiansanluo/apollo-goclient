@@ -33,6 +33,7 @@ func request(url string, callBack *CallBack) (interface{}, error) {
 
 		if res == nil || err != nil {
 			seelog.Error("Connect Apollo Server Fail,Error:", err)
+			time.Sleep(on_error_retry_interval)
 			continue
 		}
 
