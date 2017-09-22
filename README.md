@@ -14,7 +14,7 @@ Installation
 ``` shell
 gopm get github.com/cihub/seelog -v -g
 gopm get github.com/coocood/freecache -v -g
-gopm get github.com/zouyx/agollo -v -g
+gopm get github.com/xiansanluo/apollo-goclient -v -g
 ```
 
 或者
@@ -22,7 +22,7 @@ gopm get github.com/zouyx/agollo -v -g
 ``` shell
 go get -u github.com/cihub/seelog
 go get -u github.com/coocood/freecache
-go get -u github.com/zouyx/agollo
+go get -u github.com/xiansanluo/apollo-goclient
 ```
 
 
