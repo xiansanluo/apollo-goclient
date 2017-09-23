@@ -1,9 +1,10 @@
 package agollo
 
 import (
+	"strconv"
+
 	"github.com/cihub/seelog"
 	"github.com/coocood/freecache"
-	"strconv"
 )
 
 const (
@@ -13,7 +14,7 @@ const (
 	apolloConfigCacheSize = 50 * 1024 * 1024
 
 	//1 minute
-	configCacheExpireTime = 3600 * 24 * 7
+	configCacheExpireTime = 3600 * 24 * 10
 )
 
 var (
