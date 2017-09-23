@@ -66,7 +66,6 @@ func (this *AppConfig) isConnectDirectly() bool {
 	if this.NextTryConnTime >= 0 && this.NextTryConnTime > time.Now().Unix() {
 		return true
 	}
-
 	return false
 }
 
@@ -82,7 +81,6 @@ func (this *AppConfig) selectHost() string {
 		}
 		return host
 	}
-
 	return ""
 }
 

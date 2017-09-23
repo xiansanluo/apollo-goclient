@@ -8,5 +8,5 @@ import (
 func TestStart(t *testing.T) {
 	Start()
 
-	time.Sleep(2*time.Second)
+	time.Sleep(2 * time.Second)
 }

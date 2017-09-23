@@ -1,26 +1,26 @@
 package agollo
 
 import (
+	"github.com/zouyx/agollo/test"
 	"testing"
 	"time"
-	"github.com/zouyx/agollo/test"
 )
 
 func TestRequestRecovery(t *testing.T) {
-	time.Sleep(1*time.Second)
+	time.Sleep(1 * time.Second)
 	mockIpList(t)
 	go runMockConfigBackupServer(normalBackupConfigResponse)
 	defer closeAllMockServicesServer()
 
-	appConfig:=GetAppConfig()
-	urlSuffix:=getConfigUrlSuffix(appConfig)
+	appConfig := GetAppConfig()
+	urlSuffix := getConfigUrlSuffix(appConfig)
 
-	o,err:=requestRecovery(appConfig,urlSuffix,&CallBack{
-		SuccessCallBack:autoSyncConfigServicesSuccessCallBack,
+	o, err := requestRecovery(appConfig, urlSuffix, &CallBack{
+		SuccessCallBack: autoSyncConfigServicesSuccessCallBack,
 	})
 
-	test.Nil(t,err)
-	test.Nil(t,o)
+	test.Nil(t, err)
+	test.Nil(t, o)
 }
 
 //func TestErrorRequestRecovery(t *testing.T) {
@@ -45,11 +45,11 @@ func TestRequestRecovery(t *testing.T) {
 func mockIpList(t *testing.T) {
 	go runMockServicesServer(normalServicesResponse)
 	defer closeMockServicesServer()
-	time.Sleep(1*time.Second)
+	time.Sleep(1 * time.Second)
 
-	err:=syncServerIpList()
+	err := syncServerIpList()
 
-	test.Nil(t,err)
+	test.Nil(t, err)
 
-	test.Equal(t,2,len(servers))
+	test.Equal(t, 2, len(servers))
 }

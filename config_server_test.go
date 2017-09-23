@@ -1,13 +1,13 @@
 package agollo
 
 import (
-	"net/http"
 	"fmt"
-	"time"
 	"github.com/cihub/seelog"
+	"net/http"
+	"time"
 )
 
-const configResponseStr  =`{
+const configResponseStr = `{
   "appId": "100004458",
   "cluster": "default",
   "namespaceName": "application",
@@ -20,25 +20,25 @@ const configResponseStr  =`{
 
 //run mock config server
 func runMockConfigServer(handler func(http.ResponseWriter, *http.Request)) {
-	appConfig:=GetAppConfig()
-	uri:=fmt.Sprintf("/configs/%s/%s/%s",appConfig.AppId,appConfig.Cluster,appConfig.NamespaceName)
+	appConfig := GetAppConfig()
+	uri := fmt.Sprintf("/configs/%s/%s/%s", appConfig.AppId, appConfig.Cluster, appConfig.NamespaceName)
 	http.HandleFunc(uri, handler)
 
-	if appConfig==nil{
+	if appConfig == nil {
 		panic("can not find apollo config!please confirm!")
 	}
 
-	err:=http.ListenAndServe(fmt.Sprintf("%s",appConfig.Ip), nil)
-	if err!=nil{
-		seelog.Error("runMockConfigServer err:",err)
+	err := http.ListenAndServe(fmt.Sprintf("%s", appConfig.Ip), nil)
+	if err != nil {
+		seelog.Error("runMockConfigServer err:", err)
 	}
 }
 
 func closeMockConfigServer() {
-	http.DefaultServeMux=&http.ServeMux{}
+	http.DefaultServeMux = &http.ServeMux{}
 }
 
-var normalConfigCount=1
+var normalConfigCount = 1
 
 //Normal response
 //First request will hold 5s and response http.StatusNotModified
@@ -46,9 +46,9 @@ var normalConfigCount=1
 //Second request will response [{"namespaceName":"application","notificationId":3}]
 func normalConfigResponse(rw http.ResponseWriter, req *http.Request) {
 	normalConfigCount++
-	if normalConfigCount%3==0 {
+	if normalConfigCount%3 == 0 {
 		fmt.Fprintf(rw, configResponseStr)
-	}else {
+	} else {
 		time.Sleep(500 * time.Microsecond)
 		rw.WriteHeader(http.StatusNotModified)
 	}
