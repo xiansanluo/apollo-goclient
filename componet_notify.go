@@ -2,9 +2,10 @@ package agollo
 
 import (
 	"encoding/json"
-	"github.com/cihub/seelog"
 	"sync"
 	"time"
+
+	"github.com/cihub/seelog"
 )
 
 const (
@@ -98,7 +99,7 @@ func updateAllNotifications(remoteConfigs []*apolloNotify) {
 	}
 }
 
-func init() {
+func initNotify() {
 	allNotifications = &notificationsMap{
 		notifications: make(map[string]int64, 1),
 	}

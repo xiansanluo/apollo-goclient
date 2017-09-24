@@ -2,6 +2,8 @@ package agollo
 
 //start apollo
 func Start() {
+	initApp()
+	initNotify()
 	//first sync
 	notifySyncConfigServices()
 

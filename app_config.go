@@ -8,6 +8,8 @@ import (
 	"strconv"
 	"time"
 
+	"flag"
+
 	"github.com/cihub/seelog"
 )
 
@@ -107,7 +109,7 @@ type serverInfo struct {
 	IsDown      bool   `json:"-"`
 }
 
-func init() {
+func initApp() {
 	//init common
 	initCommon()
 
@@ -115,38 +117,26 @@ func init() {
 	initConfig()
 }
 
+var (
+	appid     = flag.String("appId", "test", "apollo appid")
+	cluster   = flag.String("cluster", "defalt", "apollo cluster name")
+	ip        = flag.String("ip", "localhost:8080", "apollo config server address")
+	namespace = flag.String("namespace", "application", "apollo namespace")
+	nexttry   = flag.Int64("nextTry", int64(0), "not in use")
+)
+
 func initCommon() {
 
 	initRefreshInterval()
 }
 
 func initConfig() {
-	var appid, cluster, ip, namespace string
-	var nexttry int64
-	if value := os.Getenv("APOLLO_ID"); value != "" {
-		seelog.Info(value)
-		appid = value
-	}
-	if value := os.Getenv("APOLLO_CLU"); value != "" {
-		cluster = value
-	}
-	if value := os.Getenv("APOLLO_IP"); value != "" {
-		ip = value
-	}
-	if value := os.Getenv("APOLLO_NAMESPACE"); value != "" {
-		namespace = value
-	}
-	if value := os.Getenv("APOLLO"); value != "" {
-		if val, err := strconv.ParseInt(value, 10, 64); err != nil {
-			nexttry = val
-		}
-	}
 	appConfig = &AppConfig{
-		AppId:           appid,
-		Cluster:         cluster,
-		Ip:              ip,
-		NamespaceName:   namespace,
-		NextTryConnTime: nexttry,
+		AppId:           *appid,
+		Cluster:         *cluster,
+		Ip:              *ip,
+		NamespaceName:   *namespace,
+		NextTryConnTime: *nexttry,
 	}
 	go func(appConfig *AppConfig) {
 		apolloConfig := &ApolloConfig{}
