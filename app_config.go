@@ -128,7 +128,24 @@ func initConfig() {
 	appConfig, err = loadJsonConfig(appConfigFileName)
 
 	if err != nil {
-		panic(err)
+		seelog.Error(err)
+	}
+	if value := os.Getenv("APOLLO_ID"); value != "" {
+		appConfig.AppId = value
+	}
+	if value := os.Getenv("APOLLO_CLU"); value != "" {
+		appConfig.Cluster = value
+	}
+	if value := os.Getenv("APOLLO_IP"); value != "" {
+		appConfig.Ip = value
+	}
+	if value := os.Getenv("APOLLO_NAMESPACE"); value != "" {
+		appConfig.NamespaceName = value
+	}
+	if value := os.Getenv("APOLLO"); value != "" {
+		if val, err := strconv.ParseInt(value, 10, 64); err != nil {
+			appConfig.NextTryConnTime = val
+		}
 	}
 
 	go func(appConfig *AppConfig) {
