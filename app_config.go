@@ -11,8 +11,6 @@ import (
 	"github.com/cihub/seelog"
 )
 
-const appConfigFileName = "app.properties"
-
 var (
 	refresh_interval     = 10 * time.Minute         //5m
 	refresh_interval_key = "apollo.refreshInterval" //
@@ -123,31 +121,33 @@ func initCommon() {
 }
 
 func initConfig() {
-	var err error
-	//init config file
-	appConfig, err = loadJsonConfig(appConfigFileName)
-
-	if err != nil {
-		seelog.Error(err)
-	}
+	var appid, cluster, ip, namespace string
+	var nexttry int64
 	if value := os.Getenv("APOLLO_ID"); value != "" {
-		appConfig.AppId = value
+		seelog.Info(value)
+		appid = value
 	}
 	if value := os.Getenv("APOLLO_CLU"); value != "" {
-		appConfig.Cluster = value
+		cluster = value
 	}
 	if value := os.Getenv("APOLLO_IP"); value != "" {
-		appConfig.Ip = value
+		ip = value
 	}
 	if value := os.Getenv("APOLLO_NAMESPACE"); value != "" {
-		appConfig.NamespaceName = value
+		namespace = value
 	}
 	if value := os.Getenv("APOLLO"); value != "" {
 		if val, err := strconv.ParseInt(value, 10, 64); err != nil {
-			appConfig.NextTryConnTime = val
+			nexttry = val
 		}
 	}
-
+	appConfig = &AppConfig{
+		AppId:           appid,
+		Cluster:         cluster,
+		Ip:              ip,
+		NamespaceName:   namespace,
+		NextTryConnTime: nexttry,
+	}
 	go func(appConfig *AppConfig) {
 		apolloConfig := &ApolloConfig{}
 		apolloConfig.AppId = appConfig.AppId
