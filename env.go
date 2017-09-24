@@ -3,7 +3,6 @@ package agollo
 import (
 	"errors"
 	"fmt"
-	"os"
 )
 
 const (
